@@ -58,8 +58,9 @@ const { id } = await params
 
       <div style={{display: 'flex', gap: '10px'}}>
         <button style={{flex: 1, padding: '14px', background: '#1D9E75', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: '500', cursor: 'pointer'}}>
-          Contacter & proposer un échange
-        </button>
+<a href={`/contacter/${annonce.id}?destinataire=${annonce.membre_nom}&titre=${encodeURIComponent(annonce.titre)}`} style={{flex: 1, padding: '14px', background: '#1D9E75', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: '500', cursor: 'pointer', textDecoration: 'none', textAlign: 'center', display: 'block'}}>
+  Contacter & proposer un échange
+</a>        </button>
         <button style={{padding: '14px 18px', background: 'white', border: '1px solid #ddd', borderRadius: '8px', fontSize: '15px', cursor: 'pointer'}}>
           ♡
         </button>
