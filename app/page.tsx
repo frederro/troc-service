@@ -16,7 +16,8 @@ export default async function Home() {
         </div>
         <div style={{display: 'flex', gap: '12px'}}>
           <button style={{padding: '8px 16px', border: '1px solid #ddd', borderRadius: '8px', background: 'white', cursor: 'pointer'}}>Se connecter</button>
-<a href="/creer-annonce" style={{padding: '8px 16px', border: 'none', borderRadius: '8px', background: '#1D9E75', color: 'white', cursor: 'pointer', textDecoration: 'none'}}>+ Déposer une annonce</a>        </div>
+          <a href="/creer-annonce" style={{padding: '8px 16px', border: 'none', borderRadius: '8px', background: '#1D9E75', color: 'white', cursor: 'pointer', textDecoration: 'none'}}>+ Déposer une annonce</a>
+        </div>
       </nav>
 
       <div style={{padding: '40px 0 30px'}}>
@@ -40,7 +41,7 @@ export default async function Home() {
 
       <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px'}}>
         {annonces?.map((annonce) => (
-          <div key={annonce.id} style={{border: '1px solid #eee', borderRadius: '12px', overflow: 'hidden', cursor: 'pointer'}}>
+          <a key={annonce.id} href={`/annonce/${annonce.id}`} style={{border: '1px solid #eee', borderRadius: '12px', overflow: 'hidden', cursor: 'pointer', textDecoration: 'none', color: 'inherit', display: 'block'}}>
             <div style={{height: '80px', background: '#f5f5f5', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ccc'}}>Photo</div>
             <div style={{padding: '12px'}}>
               <span style={{fontSize: '11px', padding: '2px 8px', borderRadius: '20px', background: '#E1F5EE', color: '#0F6E56'}}>{annonce.categorie}</span>
@@ -50,12 +51,10 @@ export default async function Home() {
               </div>
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <span style={{fontSize: '11px', color: '#999'}}>{annonce.membre_nom}</span>
-                <span style={{fontSize: '10px', padding: '2px 8px', background: '#E1F5EE', color: '#0F6E56', borderRadius: '20px'}}>
-                  {annonce.localisation}
-                </span>
+                <span style={{fontSize: '10px', padding: '2px 8px', background: '#E1F5EE', color: '#0F6E56', borderRadius: '20px'}}>{annonce.localisation}</span>
               </div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
 
