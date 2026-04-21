@@ -12,11 +12,12 @@ export default async function Home() {
       <nav style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #eee'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
           <div style={{width: '10px', height: '10px', borderRadius: '50%', background: '#1D9E75'}}></div>
-          <span style={{fontWeight: '500', fontSize: '18px'}}>Troc & Service</span>
+          <span style={{fontWeight: '500', fontSize: '18px'}}>Troc-Service</span>
         </div>
-        <div style={{display: 'flex', gap: '12px'}}>
-          <button style={{padding: '8px 16px', border: '1px solid #ddd', borderRadius: '8px', background: 'white', cursor: 'pointer'}}>Se connecter</button>
-          <a href="/creer-annonce" style={{padding: '8px 16px', border: 'none', borderRadius: '8px', background: '#1D9E75', color: 'white', cursor: 'pointer', textDecoration: 'none'}}>+ Déposer une annonce</a>
+        <div style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
+          <a href="/messages" style={{padding: '8px 16px', border: '1px solid #ddd', borderRadius: '8px', background: 'white', cursor: 'pointer', textDecoration: 'none', color: 'black', fontSize: '14px'}}>Mes messages</a>
+          <a href="/connexion" style={{padding: '8px 16px', border: '1px solid #ddd', borderRadius: '8px', background: 'white', cursor: 'pointer', textDecoration: 'none', color: 'black', fontSize: '14px'}}>Se connecter</a>
+          <a href="/creer-annonce" style={{padding: '8px 16px', border: 'none', borderRadius: '8px', background: '#1D9E75', color: 'white', cursor: 'pointer', textDecoration: 'none', fontSize: '14px'}}>+ Déposer une annonce</a>
         </div>
       </nav>
 
@@ -59,7 +60,7 @@ export default async function Home() {
       </div>
 
       <div style={{borderTop: '1px solid #eee', padding: '20px 0', marginTop: '40px', fontSize: '11px', color: '#999'}}>
-        Troc & Service — Plateforme d'échange entre particuliers · <a href="#" style={{color: '#1D9E75'}}>CGU</a> · <a href="#" style={{color: '#1D9E75'}}>Mentions légales</a> · <a href="#" style={{color: '#1D9E75'}}>RGPD</a>
+        Troc-Service — Plateforme d'échange entre particuliers · <a href="#" style={{color: '#1D9E75'}}>CGU</a> · <a href="#" style={{color: '#1D9E75'}}>Mentions légales</a> · <a href="#" style={{color: '#1D9E75'}}>RGPD</a>
       </div>
 
     </main>

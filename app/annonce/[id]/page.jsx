@@ -16,7 +16,7 @@ const { id } = await params
       <nav style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #eee', marginBottom: '30px'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
           <div style={{width: '10px', height: '10px', borderRadius: '50%', background: '#1D9E75'}}></div>
-          <a href="/" style={{fontWeight: '500', fontSize: '18px', textDecoration: 'none', color: 'black'}}>Troc & Service</a>
+          <a href="/" style={{fontWeight: '500', fontSize: '18px', textDecoration: 'none', color: 'black'}}>Troc - Service</a>
         </div>
         <a href="/" style={{fontSize: '13px', color: '#666', textDecoration: 'none'}}>← Retour aux annonces</a>
       </nav>
@@ -67,7 +67,7 @@ const { id } = await params
       </div>
 
       <div style={{marginTop: '16px', fontSize: '11px', color: '#bbb', lineHeight: '1.6'}}>
-        Annonce publiée par un particulier. Troc & Service est un intermédiaire de mise en relation et n'est pas responsable de la qualité des biens ou services échangés.
+        Annonce publiée par un particulier. Troc - Service est un intermédiaire de mise en relation et n'est pas responsable de la qualité des biens ou services échangés.
       </div>
     </main>
   )

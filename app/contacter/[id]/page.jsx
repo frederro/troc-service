@@ -40,7 +40,7 @@ function ContacterForm({ id }) {
       <nav style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #eee', marginBottom: '30px'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
           <div style={{width: '10px', height: '10px', borderRadius: '50%', background: '#1D9E75'}}></div>
-          <a href="/" style={{fontWeight: '500', fontSize: '18px', textDecoration: 'none', color: 'black'}}>Troc & Service</a>
+          <a href="/" style={{fontWeight: '500', fontSize: '18px', textDecoration: 'none', color: 'black'}}>Troc - Service</a>
         </div>
         <a href={`/annonce/${id}`} style={{fontSize: '13px', color: '#666', textDecoration: 'none'}}>← Retour à l'annonce</a>
       </nav>

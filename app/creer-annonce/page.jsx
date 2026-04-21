@@ -34,7 +34,7 @@ export default function CreerAnnonce() {
       <nav style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #eee', marginBottom: '30px'}}>
         <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
           <div style={{width: '10px', height: '10px', borderRadius: '50%', background: '#1D9E75'}}></div>
-          <a href="/" style={{fontWeight: '500', fontSize: '18px', textDecoration: 'none', color: 'black'}}>Troc & Service</a>
+          <a href="/" style={{fontWeight: '500', fontSize: '18px', textDecoration: 'none', color: 'black'}}>Troc - Service</a>
         </div>
       </nav>
       <h1 style={{fontSize: '24px', fontWeight: '500', marginBottom: '6px'}}>Déposer une annonce</h1>
