@@ -28,11 +28,14 @@ export default function Abonnement() {
           <a href="/" style={{fontWeight: '500', fontSize: '18px', textDecoration: 'none', color: 'black'}}>Troc-Service</a>
         </div>
       </nav>
+
       <div style={{textAlign: 'center', marginBottom: '40px'}}>
         <h1 style={{fontSize: '26px', fontWeight: '500', marginBottom: '10px'}}>Choisissez votre formule</h1>
-        <p style={{color: '#666', fontSize: '14px'}}>Accès complet — identité vérifiée — résiliable à tout moment</p>
+        <p style={{color: '#666', fontSize: '14px'}}>Accès complet — identité vérifiée — échanges assurés — résiliable à tout moment</p>
       </div>
-      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px'}}></div><div style={{border: '1px solid #eee', borderRadius: '16px', padding: '24px', textAlign: 'center'}}>
+
+      <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '30px'}}>
+        <div style={{border: '1px solid #eee', borderRadius: '16px', padding: '24px', textAlign: 'center'}}>
           <div style={{fontSize: '13px', color: '#666', marginBottom: '8px'}}>Mensuel</div>
           <div style={{fontSize: '36px', fontWeight: '500', marginBottom: '4px'}}>1€</div>
           <div style={{fontSize: '13px', color: '#999', marginBottom: '20px'}}>par mois</div>
@@ -49,8 +52,7 @@ export default function Abonnement() {
         </div>
 
         <div style={{border: '2px solid #1D9E75', borderRadius: '16px', padding: '24px', textAlign: 'center', position: 'relative'}}>
-          <div style={{position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', background: '#1D9E75', color: 'white', fontSize: '11px', padding: '3px 12px', borderRadius: '20px', whiteSpace: 'nowrap'}}>Meilleure offre</div>
-          <div style={{fontSize: '13px', color: '#666', marginBottom: '8px'}}>Annuel</div>
+<div style={{position: 'relative', marginBottom: '8px', background: '#1D9E75', color: 'white', fontSize: '11px', padding: '3px 12px', borderRadius: '20px', whiteSpace: 'nowrap', display: 'inline-block'}}>Meilleure offre</div>
           <div style={{fontSize: '36px', fontWeight: '500', marginBottom: '4px'}}>10€</div>
           <div style={{fontSize: '13px', color: '#999', marginBottom: '4px'}}>par an</div>
           <div style={{fontSize: '12px', color: '#1D9E75', marginBottom: '16px'}}>soit 0,83€/mois — 2 mois offerts !</div>
