@@ -17,6 +17,7 @@ export default async function Home() {
         <div style={{display: 'flex', gap: '12px', alignItems: 'center'}}>
           <a href="/messages" style={{padding: '8px 16px', border: '1px solid #ddd', borderRadius: '8px', background: 'white', cursor: 'pointer', textDecoration: 'none', color: 'black', fontSize: '14px'}}>Mes messages</a>
           <a href="/connexion" style={{padding: '8px 16px', border: '1px solid #ddd', borderRadius: '8px', background: 'white', cursor: 'pointer', textDecoration: 'none', color: 'black', fontSize: '14px'}}>Se connecter</a>
+          <a href="/abonnement" style={{padding: '8px 16px', border: '1px solid #1D9E75', borderRadius: '8px', color: '#1D9E75', cursor: 'pointer', textDecoration: 'none', fontSize: '14px'}}>Rejoindre — 1€/mois</a>
           <a href="/creer-annonce" style={{padding: '8px 16px', border: 'none', borderRadius: '8px', background: '#1D9E75', color: 'white', cursor: 'pointer', textDecoration: 'none', fontSize: '14px'}}>+ Déposer une annonce</a>
         </div>
       </nav>
