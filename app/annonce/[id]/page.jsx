@@ -61,7 +61,8 @@ export default async function FicheAnnonce({ params }) {
         <a href={`/contacter/${annonce.id}?destinataire=${annonce.membre_nom}&titre=${encodeURIComponent(annonce.titre)}`} style={{flex: 1, padding: '14px', background: '#1D9E75', color: 'white', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: '500', cursor: 'pointer', textDecoration: 'none', textAlign: 'center', display: 'block'}}>
           Contacter & proposer un échange
         </a>
-        <button style={{padding: '14px 18px', background: 'white', border: '1px solid #ddd', borderRadius: '8px', fontSize: '15px', cursor: 'pointer'}}>♡</button>
+        
+        <a href={`/evaluer/${annonce.id}?membre=${annonce.membre_nom}&titre=${encodeURIComponent(annonce.titre)}`} style={{padding: '14px 16px', background: 'white', border: '1px solid #ddd', borderRadius: '8px', fontSize: '13px', cursor: 'pointer', textDecoration: 'none', color: '#444'}}>⭐ Évaluer</a><button style={{padding: '14px 18px', background: 'white', border: '1px solid #ddd', borderRadius: '8px', fontSize: '15px', cursor: 'pointer'}}>♡</button>
       </div>
 
       <div style={{marginTop: '16px', fontSize: '11px', color: '#bbb', lineHeight: '1.6'}}>
