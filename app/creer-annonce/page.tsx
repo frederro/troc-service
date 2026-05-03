@@ -300,19 +300,33 @@ export default function CreerAnnonce() {
 
       const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
       const addressQuery = buildGeocodeAddress(ville, code_postal, pays);
+      const defaultLat = 48.8566;
+      const defaultLng = 2.3522;
       if (key && addressQuery.replace(/[,\s]/g, "").length > 0) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
         try {
           const geoRes = await fetch(
-            `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressQuery)}&key=${key}`
+            `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(addressQuery)}&key=${key}`,
+            { signal: controller.signal }
           );
+          clearTimeout(timeoutId);
           const geoData = await geoRes.json();
           const loc0 = geoData.results?.[0]?.geometry?.location;
-          if (!cancelled && loc0) {
+          if (!cancelled && loc0?.lat != null && loc0?.lng != null) {
             setLatitude(loc0.lat);
             setLongitude(loc0.lng);
+          } else if (!cancelled) {
+            setLatitude(defaultLat);
+            setLongitude(defaultLng);
           }
         } catch {
-          /* conserver les coordonnées par défaut */
+          if (!cancelled) {
+            setLatitude(defaultLat);
+            setLongitude(defaultLng);
+          }
+        } finally {
+          clearTimeout(timeoutId);
         }
       }
       if (!cancelled) setGeoLoading(false);
