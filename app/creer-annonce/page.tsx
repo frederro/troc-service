@@ -84,7 +84,6 @@ const CATEGORIES = Object.keys(CATEGORIES_DATA);
 type Suggestion = { categorie: string; sous_categorie: string };
 
 const KEYWORDS_MAP: { keywords: string[]; categorie: string; sous_categorie: string }[] = [
-  // VÊTEMENTS FEMME
   { keywords: ["robe", "jupe", "minijupe"], categorie: "Vêtements", sous_categorie: "Femme - Robes & jupes" },
   { keywords: ["soutien-gorge", "lingerie", "bralette", "culotte", "slip femme"], categorie: "Vêtements", sous_categorie: "Femme - Lingerie" },
   { keywords: ["bikini", "maillot de bain femme", "tankini"], categorie: "Vêtements", sous_categorie: "Femme - Maillots de bain" },
@@ -94,46 +93,30 @@ const KEYWORDS_MAP: { keywords: string[]; categorie: string; sous_categorie: str
   { keywords: ["escarpins", "talons", "bottines femme", "ballerines", "sandales femme", "bottes femme"], categorie: "Vêtements", sous_categorie: "Femme - Chaussures" },
   { keywords: ["sac à main", "sac femme", "pochette", "bandoulière", "foulard", "ceinture femme"], categorie: "Vêtements", sous_categorie: "Femme - Accessoires" },
   { keywords: ["legging sport femme", "brassière", "tenue sport femme"], categorie: "Vêtements", sous_categorie: "Femme - Sport" },
-  // VÊTEMENTS HOMME
   { keywords: ["chemise homme", "polo", "sweat homme", "t-shirt homme", "pull homme"], categorie: "Vêtements", sous_categorie: "Homme - Hauts" },
   { keywords: ["pantalon homme", "jean homme", "bermuda", "short homme", "chino"], categorie: "Vêtements", sous_categorie: "Homme - Bas" },
   { keywords: ["manteau homme", "veste homme", "doudoune", "blouson", "parka homme", "imperméable homme"], categorie: "Vêtements", sous_categorie: "Homme - Vestes & manteaux" },
   { keywords: ["baskets homme", "mocassins", "bottines homme", "derby", "chaussures homme", "boots homme"], categorie: "Vêtements", sous_categorie: "Homme - Chaussures" },
   { keywords: ["ceinture homme", "cravate", "chapeau homme", "bonnet", "écharpe", "sac homme"], categorie: "Vêtements", sous_categorie: "Homme - Accessoires" },
   { keywords: ["jogging homme", "survêtement", "maillot sport homme"], categorie: "Vêtements", sous_categorie: "Homme - Sport" },
-  // VÊTEMENTS ENFANT
   { keywords: ["vêtement enfant", "pull enfant", "t-shirt enfant", "sweat enfant"], categorie: "Vêtements", sous_categorie: "Enfant - Hauts" },
   { keywords: ["pantalon enfant", "jean enfant", "short enfant", "legging enfant"], categorie: "Vêtements", sous_categorie: "Enfant - Bas" },
   { keywords: ["manteau enfant", "anorak", "doudoune enfant", "veste enfant"], categorie: "Vêtements", sous_categorie: "Enfant - Vestes & manteaux" },
   { keywords: ["chaussures enfant", "baskets enfant", "sandales enfant", "bottes enfant"], categorie: "Vêtements", sous_categorie: "Enfant - Chaussures" },
-  // VÊTEMENTS BÉBÉ
   { keywords: ["body bébé", "grenouillère", "pyjama bébé", "combinaison bébé"], categorie: "Vêtements", sous_categorie: "Bébé - Combinaisons" },
   { keywords: ["chaussons bébé", "chaussures bébé"], categorie: "Vêtements", sous_categorie: "Bébé - Chaussures" },
   { keywords: ["pantalon bébé", "short bébé"], categorie: "Vêtements", sous_categorie: "Bébé - Bas" },
   { keywords: ["gilet bébé", "pull bébé", "t-shirt bébé"], categorie: "Vêtements", sous_categorie: "Bébé - Hauts" },
-
-  // OBJETS & MATÉRIEL — Maison
   { keywords: ["canapé", "sofa", "fauteuil", "meuble", "déco", "lampe", "tapis", "table", "chaise", "bureau", "étagère", "armoire", "commode", "buffet", "miroir", "tableau", "vase", "bougie déco", "coussin", "rideau"], categorie: "Objets & matériel", sous_categorie: "Maison & déco" },
-  // Électronique
   { keywords: ["téléphone", "smartphone", "iphone", "samsung", "huawei", "pixel", "ordinateur", "laptop", "pc portable", "macbook", "imac", "tablette", "ipad", "tv", "télévision", "écran", "moniteur", "console", "playstation", "xbox", "nintendo", "switch", "casque audio", "enceinte", "airpods", "montre connectée", "gopro", "drone", "appareil photo", "reflex", "objectif", "câble", "chargeur", "souris", "clavier"], categorie: "Objets & matériel", sous_categorie: "Électronique" },
-  // Électroménager
   { keywords: ["lave-linge", "machine à laver", "réfrigérateur", "frigo", "congélateur", "aspirateur", "four", "micro-onde", "cafetière", "expresso", "robot cuisine", "thermomix", "blender", "mixeur", "grille-pain", "bouilloire", "sèche-linge", "lave-vaisselle", "climatiseur", "radiateur", "ventilateur", "fer à repasser"], categorie: "Objets & matériel", sous_categorie: "Électroménager" },
-  // Sport & loisirs
   { keywords: ["vélo", "vtt", "vélo route", "trottinette", "ski", "snowboard", "surf", "planche", "tente", "sac de couchage", "randonnée", "fitness", "musculation", "haltères", "vélo elliptique", "tapis de course", "pêche", "canne à pêche", "kayak", "paddle", "rollers", "skate", "golf", "tennis", "raquette", "football", "ballon", "rugby", "basket", "natation", "boxe", "yoga", "tapis yoga"], categorie: "Objets & matériel", sous_categorie: "Sport & loisirs" },
-  // Livres
   { keywords: ["livre", "roman", "bd", "bande dessinée", "manga", "magazine", "revue", "comic", "atlas", "dictionnaire", "encyclopédie", "guide", "cuisine livre", "autobiographie", "biographie"], categorie: "Objets & matériel", sous_categorie: "Livres, BD & magazines" },
-  // Jardin & bricolage
   { keywords: ["tondeuse", "perceuse", "visseuse", "scie", "ponceuse", "meuleuse", "outil", "jardinière", "pot de fleur", "arrosoir", "tuyau arrosage", "brouette", "pelle", "râteau", "taille-haie", "débroussailleuse", "souffleur", "composteur", "abri jardin", "barbecue", "plancha", "parasol", "salon de jardin", "hamac"], categorie: "Objets & matériel", sous_categorie: "Jardin & bricolage" },
-  // Véhicules
   { keywords: ["voiture", "auto", "porsche", "ferrari", "bmw", "mercedes", "audi", "renault", "peugeot", "citroën", "volkswagen", "ford", "toyota", "honda", "nissan", "hyundai", "kia", "fiat", "seat", "opel", "moto", "scooter", "mobylette", "quad", "camping-car", "caravane", "remorque", "vélo électrique", "trottinette électrique", "voiture électrique", "pièces auto", "jantes", "pneus"], categorie: "Objets & matériel", sous_categorie: "Véhicules & accessoires" },
-  // Musique
   { keywords: ["guitare", "guitare électrique", "guitare acoustique", "basse", "piano", "clavier", "violon", "violoncelle", "trompette", "saxophone", "flûte", "batterie", "ampli", "pédale effet", "microphone", "table de mixage", "synthétiseur", "ukulélé", "harmonica", "accordéon", "instrument"], categorie: "Objets & matériel", sous_categorie: "Musique" },
-  // Bébé & puériculture
   { keywords: ["poussette", "lit bébé", "siège auto", "chaise haute", "transat", "baby phone", "parc bébé", "tapis éveil", "porteur", "rehausseur", "couffin", "landau", "porte-bébé", "mouche-bébé", "baignoire bébé"], categorie: "Objets & matériel", sous_categorie: "Bébé & puériculture" },
-  // Bateaux
   { keywords: ["bateau", "voilier", "jet-ski", "moteur bateau", "annexe", "kayak mer", "zodiac", "catamaran"], categorie: "Objets & matériel", sous_categorie: "Bateaux & nautisme" },
-
-  // SERVICES
   { keywords: ["bricolage", "plomberie", "électricité", "carrelage", "peinture maison", "menuiserie", "serrurerie", "réparation", "dépannage", "installation"], categorie: "Services", sous_categorie: "Bricolage & réparation" },
   { keywords: ["jardinage", "tonte", "taille", "haie", "pelouse", "élagage", "désherbage", "plantation", "arrosage"], categorie: "Services", sous_categorie: "Jardinage & espaces verts" },
   { keywords: ["déménagement", "transport", "livraison", "camion", "débarras"], categorie: "Services", sous_categorie: "Déménagement & transport" },
@@ -141,8 +124,6 @@ const KEYWORDS_MAP: { keywords: string[]; categorie: string; sous_categorie: str
   { keywords: ["garde enfant", "baby-sitting", "babysitter", "garde animaux", "pet-sitting", "promenade chien", "garde plantes"], categorie: "Services", sous_categorie: "Garde enfants, animaux, plantes" },
   { keywords: ["cours", "soutien scolaire", "tutorat", "formation", "leçon", "coaching", "apprentissage"], categorie: "Services", sous_categorie: "Cours & transmission présentiel" },
   { keywords: ["cours en ligne", "visio", "e-learning", "formation distanciel", "coaching en ligne"], categorie: "Services", sous_categorie: "Cours & transmission distanciel" },
-
-  // COUPS DE MAIN
   { keywords: ["rangement", "débarras", "vider cave", "vider grenier", "tri"], categorie: "Coups de main", sous_categorie: "Rangement & vide" },
   { keywords: ["nettoyage", "ménage", "vitres", "nettoyage voiture", "lavage"], categorie: "Coups de main", sous_categorie: "Nettoyage" },
   { keywords: ["monter meuble", "accrocher", "ampoule", "petite réparation", "aide maison"], categorie: "Coups de main", sous_categorie: "Aide maison" },
@@ -150,22 +131,16 @@ const KEYWORDS_MAP: { keywords: string[]; categorie: string; sous_categorie: str
   { keywords: ["déchetterie", "encombrants", "gravats"], categorie: "Coups de main", sous_categorie: "Déchetterie & encombrants" },
   { keywords: ["formulaire", "administratif", "imprimer", "papiers", "déclaration"], categorie: "Coups de main", sous_categorie: "Aide administrative" },
   { keywords: ["accompagner", "médecin", "promenade", "compagnie", "sortie"], categorie: "Coups de main", sous_categorie: "Compagnie & sorties" },
-
-  // ALIMENTATION
   { keywords: ["gâteau", "tarte", "confiture", "miel", "pâtisserie", "pain", "brioche", "cookie", "cake", "brownie", "macarons", "crêpe", "quiche"], categorie: "Alimentation & fait-maison", sous_categorie: "Cuisine & pâtisserie" },
   { keywords: ["légumes", "fruits", "herbes", "œufs", "graines", "plantes aromatiques", "tomates", "courgettes", "salade", "pommes", "fraises", "noix"], categorie: "Alimentation & fait-maison", sous_categorie: "Du jardin & de la nature" },
   { keywords: ["bière", "cidre", "limonade", "kombucha", "sirop", "jus", "vin maison", "eau de vie", "liqueur"], categorie: "Alimentation & fait-maison", sous_categorie: "Boissons artisanales" },
   { keywords: ["bio", "vegan", "végétarien", "sans gluten", "sans lactose", "halal", "casher", "cru", "fermenté"], categorie: "Alimentation & fait-maison", sous_categorie: "Régimes & spécialités" },
-
-  // JEUX & JOUETS ENFANT
   { keywords: ["duplo", "briques lego", "lego city", "lego technic", "lego star wars"], categorie: "Jeux & Jouets enfant", sous_categorie: "Lego & briques" },
   { keywords: ["playmobil"], categorie: "Jeux & Jouets enfant", sous_categorie: "Playmobil" },
   { keywords: ["poupée", "barbie", "figurine enfant", "action figure"], categorie: "Jeux & Jouets enfant", sous_categorie: "Figurines & poupées" },
   { keywords: ["monopoly", "puzzle enfant", "jeu société enfant", "uno", "memory", "trivial pursuit junior"], categorie: "Jeux & Jouets enfant", sous_categorie: "Jeux de société enfant" },
   { keywords: ["jeu vidéo enfant", "nintendo junior", "tablette enfant", "leapfrog"], categorie: "Jeux & Jouets enfant", sous_categorie: "Jeux vidéo enfant" },
   { keywords: ["peluche", "doudou", "nounours", "lapin peluche", "ours peluche"], categorie: "Jeux & Jouets enfant", sous_categorie: "Peluches & doudous" },
-
-  // COLLECTIONS & PASSIONS
   { keywords: ["lego vintage", "lego ancien", "lego rare", "lego 80s", "lego 90s"], categorie: "Collections & passions", sous_categorie: "Lego vintage & sets rares" },
   { keywords: ["funko pop", "funko", "marvel figurine", "star wars figurine", "dragon ball figurine", "one piece figurine", "naruto figurine", "disney figurine"], categorie: "Collections & passions", sous_categorie: "Figurines de collection" },
   { keywords: ["pokémon", "carte pokemon", "magic the gathering", "yu-gi-oh", "one piece carte", "dragon ball carte"], categorie: "Collections & passions", sous_categorie: "Cartes à collectionner" },
@@ -178,8 +153,6 @@ const KEYWORDS_MAP: { keywords: string[]; categorie: string; sous_categorie: str
   { keywords: ["maquette", "miniature", "modélisme", "train miniature", "voiture miniature", "figurine militaire"], categorie: "Collections & passions", sous_categorie: "Modélisme & miniatures" },
   { keywords: ["affiche vintage", "poster vintage", "affiche ancienne", "publicité ancienne"], categorie: "Collections & passions", sous_categorie: "Affiches & posters vintage" },
   { keywords: ["carte postale", "carte postale ancienne", "cpa"], categorie: "Collections & passions", sous_categorie: "Cartes postales anciennes" },
-
-  // ARTISANAT & CRÉATION
   { keywords: ["bijou fait main", "bracelet fait main", "collier fait main", "bague fait main", "boucles oreilles"], categorie: "Artisanat & création", sous_categorie: "Bijoux & accessoires faits main" },
   { keywords: ["couture", "tissu", "tricot", "broderie", "crochet", "patron couture", "laine", "mercerie"], categorie: "Artisanat & création", sous_categorie: "Textile & couture" },
   { keywords: ["bois", "menuiserie", "sculpture bois", "objet bois", "planche bois"], categorie: "Artisanat & création", sous_categorie: "Bois & menuiserie" },
@@ -188,16 +161,12 @@ const KEYWORDS_MAP: { keywords: string[]; categorie: string; sous_categorie: str
   { keywords: ["peinture", "aquarelle", "illustration", "dessin", "tableau peint", "acrylique", "huile", "gouache", "pastel"], categorie: "Artisanat & création", sous_categorie: "Peinture, dessin & illustration" },
   { keywords: ["impression 3d", "imprimante 3d", "filament 3d", "objet imprimé 3d"], categorie: "Artisanat & création", sous_categorie: "Impression 3D" },
   { keywords: ["bougie", "savon fait main", "cosmétique naturel", "baume", "huile essentielle", "lotion"], categorie: "Artisanat & création", sous_categorie: "Bougies, savons & cosmétiques naturels" },
-
-  // COMPÉTENCES NUMÉRIQUES
   { keywords: ["logo", "graphisme", "design graphique", "charte graphique", "identité visuelle", "affiche", "flyer", "infographie"], categorie: "Compétences numériques", sous_categorie: "Graphisme & design" },
   { keywords: ["développement", "site web", "application", "programmation", "code", "javascript", "python", "react", "wordpress", "shopify", "application mobile"], categorie: "Compétences numériques", sous_categorie: "Développement & code" },
   { keywords: ["rédaction", "traduction", "copywriting", "article", "blog", "seo", "texte", "contenu"], categorie: "Compétences numériques", sous_categorie: "Rédaction & traduction" },
   { keywords: ["montage vidéo", "photographie", "retouche photo", "lightroom", "photoshop", "vidéo", "clip", "reportage", "shooting"], categorie: "Compétences numériques", sous_categorie: "Photo & vidéo" },
   { keywords: ["mixage", "mastering", "composition musicale", "son", "podcast", "enregistrement", "studio", "beat"], categorie: "Compétences numériques", sous_categorie: "Musique & son" },
   { keywords: ["réseaux sociaux", "instagram", "tiktok", "community manager", "facebook", "linkedin", "youtube", "communication digitale"], categorie: "Compétences numériques", sous_categorie: "Réseaux sociaux & communication" },
-
-  // HÉBERGEMENT & ACCUEIL
   { keywords: ["chambre", "logement", "hébergement", "loger", "dormir", "séjour", "coloc", "maison contre", "studio contre", "accueil"], categorie: "Hébergement & accueil", sous_categorie: "Chambre contre services" },
   { keywords: ["travaux contre", "rénover", "rénovation contre", "peinture contre"], categorie: "Hébergement & accueil", sous_categorie: "Logement contre travaux" },
   { keywords: ["nourri logé", "nourri hébergé", "logé nourri"], categorie: "Hébergement & accueil", sous_categorie: "Séjour contre compétences" },
@@ -223,19 +192,6 @@ function getSuggestions(titre: string): Suggestion[] {
   return results.slice(0, 4);
 }
 
-function logSupabaseishError(label: string, err: unknown) {
-  const e = err as any;
-  console.groupCollapsed(label);
-  try {
-    console.error('raw:', err);
-    console.error('normalized:', {
-      name: e?.name, message: e?.message, status: e?.status,
-      statusCode: e?.statusCode, code: e?.code, details: e?.details,
-      hint: e?.hint, error: e?.error, cause: e?.cause,
-    });
-  } finally { console.groupEnd(); }
-}
-
 export default function CreerAnnonce() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -250,6 +206,7 @@ export default function CreerAnnonce() {
   const [selectedPhotos, setSelectedPhotos] = useState<SelectedPhoto[]>([]);
   const selectedPhotosRef = useRef<SelectedPhoto[]>([]);
   const [mode, setMode] = useState<'propose' | 'cherche'>('propose');
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     titre: '',
@@ -340,14 +297,12 @@ export default function CreerAnnonce() {
     return () => { for (const p of selectedPhotosRef.current) URL.revokeObjectURL(p.previewUrl); };
   }, []);
 
-  // Suggestion titre
   useEffect(() => {
     setSuggestionDismissed(false);
     const timer = setTimeout(() => { setSuggestions(getSuggestions(formData.titre)); }, 400);
     return () => clearTimeout(timer);
   }, [formData.titre]);
 
-  // Suggestion échange
   useEffect(() => {
     setSuggestionEchangeDismissed(false);
     const timer = setTimeout(() => { setSuggestionsEchange(getSuggestions(formData.echange_souhaite)); }, 400);
@@ -390,6 +345,8 @@ export default function CreerAnnonce() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setUploadError(null);
+
     try {
       const { data: userData } = await supabase.auth.getUser();
       const user = userData?.user ?? null;
@@ -399,10 +356,24 @@ export default function CreerAnnonce() {
       }
       const user_id = user.id;
 
-      const { error: bucketAccessError } = await supabase.storage.from('annonces-photos').list('', { limit: 1 });
-      if (bucketAccessError) {
-        logSupabaseishError('Bucket inaccessible', bucketAccessError);
-        throw new Error(`Bucket inaccessible: ${bucketAccessError.message}`);
+      // Test accès bucket
+      try {
+        const { error: bucketAccessError } = await supabase.storage.from('annonces-photos').list('', { limit: 1 });
+        if (bucketAccessError) {
+          const msg = `Bucket inaccessible: ${bucketAccessError.message} | code: ${(bucketAccessError as any).statusCode} | details: ${JSON.stringify(bucketAccessError)}`;
+          console.error('STORAGE BUCKET ERROR:', msg);
+          setUploadError(msg);
+          alert(`Erreur bucket: ${msg}`);
+          setLoading(false);
+          return;
+        }
+      } catch (bucketErr: any) {
+        const msg = `Bucket exception: ${bucketErr?.message || JSON.stringify(bucketErr)}`;
+        console.error('STORAGE BUCKET EXCEPTION:', msg);
+        setUploadError(msg);
+        alert(msg);
+        setLoading(false);
+        return;
       }
 
       const paysValue = profilePays.trim() || "France";
@@ -424,8 +395,8 @@ export default function CreerAnnonce() {
           sous_categorie_souhaitee: formData.sous_categorie_souhaitee || null,
           membre_nom: formData.membre_nom,
           ouvert_propositions: formData.ouvert_propositions,
-          latitude: latitude,
-          longitude: longitude,
+          latitude,
+          longitude,
           photos: [],
           user_id,
           mode,
@@ -433,7 +404,13 @@ export default function CreerAnnonce() {
         .select('id')
         .single();
 
-      if (insertError) { logSupabaseishError('Insert failed', insertError); throw insertError; }
+      if (insertError) {
+        const msg = `Insert failed: ${insertError.message} | code: ${(insertError as any).code} | details: ${JSON.stringify(insertError)}`;
+        console.error('INSERT ERROR:', msg);
+        alert(`Erreur création annonce: ${msg}`);
+        setLoading(false);
+        return;
+      }
 
       const annonceId = inserted?.id;
       const photoUrls: string[] = [];
@@ -442,19 +419,65 @@ export default function CreerAnnonce() {
         for (const file of photoFiles) {
           const safeName = file.name.replace(/[^\w.\-]+/g, '_');
           const path = `${annonceId}/${Date.now()}-${safeName}`;
-          const { error: uploadError } = await supabase.storage.from('annonces-photos').upload(path, file, { upsert: false });
-          if (uploadError) { logSupabaseishError('Upload failed', uploadError); throw uploadError; }
-          const { data: publicUrlData } = supabase.storage.from('annonces-photos').getPublicUrl(path);
-          if (publicUrlData?.publicUrl) photoUrls.push(publicUrlData.publicUrl);
+
+          try {
+            console.log(`Uploading: ${path}, size: ${file.size}, type: ${file.type}`);
+            const { data: uploadData, error: uploadError } = await supabase.storage
+              .from('annonces-photos')
+              .upload(path, file, { upsert: false });
+
+            if (uploadError) {
+              const errMsg = `Upload failed for ${file.name}: ${uploadError.message} | statusCode: ${(uploadError as any).statusCode} | error: ${(uploadError as any).error} | details: ${JSON.stringify(uploadError)}`;
+              console.error('STORAGE ERROR:', errMsg);
+              setUploadError(errMsg);
+              alert(`Erreur upload photo: ${errMsg}`);
+              setLoading(false);
+              return;
+            }
+
+            console.log('Upload success:', uploadData);
+            const { data: publicUrlData } = supabase.storage.from('annonces-photos').getPublicUrl(path);
+            if (publicUrlData?.publicUrl) photoUrls.push(publicUrlData.publicUrl);
+
+          } catch (uploadException: any) {
+            const errMsg = `Upload exception for ${file.name}: ${uploadException?.message || JSON.stringify(uploadException)}`;
+            console.error('STORAGE EXCEPTION:', errMsg);
+            setUploadError(errMsg);
+            alert(`Exception upload: ${errMsg}`);
+            setLoading(false);
+            return;
+          }
         }
-        const { error: updateError } = await supabase.from('annonces').update({ photos: photoUrls }).eq('id', annonceId);
-        if (updateError) { logSupabaseishError('Update photos failed', updateError); throw updateError; }
+
+        try {
+          const { error: updateError } = await supabase
+            .from('annonces')
+            .update({ photos: photoUrls })
+            .eq('id', annonceId);
+
+          if (updateError) {
+            const errMsg = `Update photos failed: ${updateError.message} | ${JSON.stringify(updateError)}`;
+            console.error('UPDATE PHOTOS ERROR:', errMsg);
+            alert(`Erreur mise à jour photos: ${errMsg}`);
+            setLoading(false);
+            return;
+          }
+        } catch (updateException: any) {
+          const errMsg = `Update exception: ${updateException?.message || JSON.stringify(updateException)}`;
+          console.error('UPDATE EXCEPTION:', errMsg);
+          alert(errMsg);
+          setLoading(false);
+          return;
+        }
       }
 
       router.push('/');
-    } catch (err) {
-      alert("Erreur lors de la création de l'annonce");
-      logSupabaseishError("Erreur création", err);
+
+    } catch (err: any) {
+      const errMsg = `Erreur générale: ${err?.message || JSON.stringify(err)}`;
+      console.error('GENERAL ERROR:', errMsg);
+      setUploadError(errMsg);
+      alert(errMsg);
     } finally {
       setLoading(false);
     }
@@ -469,41 +492,23 @@ export default function CreerAnnonce() {
     <main className="createRoot" style={{ fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto', padding: '48px 24px' }}>
       <h1 style={{ fontSize: '26px', color: '#1D9E75', marginBottom: '28px', fontWeight: 700, letterSpacing: '-0.02em' }}>Déposer une annonce</h1>
 
+      {uploadError && (
+        <div style={{ marginBottom: '20px', padding: '14px 16px', background: '#fff3ee', border: '1px solid #E8622A', borderRadius: '10px', fontSize: '13px', color: '#c0392b', wordBreak: 'break-all' }}>
+          <strong>Erreur détectée :</strong> {uploadError}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
         {/* MODE */}
         <div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-            <button
-              type="button"
-              onClick={() => setMode('propose')}
-              style={{
-                padding: '16px 14px',
-                borderRadius: '12px',
-                border: `1px solid ${mode === 'propose' ? '#1D9E75' : '#ddd'}`,
-                background: mode === 'propose' ? '#1D9E75' : 'white',
-                color: mode === 'propose' ? 'white' : '#333',
-                cursor: 'pointer',
-                fontSize: '16px',
-                fontWeight: 700,
-              }}
-            >
+            <button type="button" onClick={() => setMode('propose')}
+              style={{ padding: '16px 14px', borderRadius: '12px', border: `1px solid ${mode === 'propose' ? '#1D9E75' : '#ddd'}`, background: mode === 'propose' ? '#1D9E75' : 'white', color: mode === 'propose' ? 'white' : '#333', cursor: 'pointer', fontSize: '16px', fontWeight: 700 }}>
               🎁 Je propose
             </button>
-            <button
-              type="button"
-              onClick={() => setMode('cherche')}
-              style={{
-                padding: '16px 14px',
-                borderRadius: '12px',
-                border: `1px solid ${mode === 'cherche' ? '#1D9E75' : '#ddd'}`,
-                background: mode === 'cherche' ? '#1D9E75' : 'white',
-                color: mode === 'cherche' ? 'white' : '#333',
-                cursor: 'pointer',
-                fontSize: '16px',
-                fontWeight: 700,
-              }}
-            >
+            <button type="button" onClick={() => setMode('cherche')}
+              style={{ padding: '16px 14px', borderRadius: '12px', border: `1px solid ${mode === 'cherche' ? '#1D9E75' : '#ddd'}`, background: mode === 'cherche' ? '#1D9E75' : 'white', color: mode === 'cherche' ? 'white' : '#333', cursor: 'pointer', fontSize: '16px', fontWeight: 700 }}>
               🔍 Je cherche
             </button>
           </div>
@@ -547,16 +552,14 @@ export default function CreerAnnonce() {
         <div>
           <div className="rowTwoCols" style={{ display: 'flex', gap: '14px' }}>
             <div style={{ flex: 1 }}>
-              <select value={formData.categorie}
-                aria-label="Catégorie"
+              <select value={formData.categorie} aria-label="Catégorie"
                 style={{ width: '100%', padding: '14px 12px', borderRadius: '12px', border: '1px solid #e0e0e0', background: 'white', fontSize: '14px' }}
                 onChange={(e) => setFormData({ ...formData, categorie: e.target.value, sous_categorie: '' })}>
                 {CATEGORIES.map((cat) => <option key={cat} value={cat}>{cat}</option>)}
               </select>
             </div>
             <div style={{ flex: 1 }}>
-              <select value={formData.sous_categorie}
-                aria-label="Sous-catégorie"
+              <select value={formData.sous_categorie} aria-label="Sous-catégorie"
                 style={{ width: '100%', padding: '14px 12px', borderRadius: '12px', border: '1px solid #e0e0e0', background: 'white', fontSize: '14px' }}
                 onChange={(e) => setFormData({ ...formData, sous_categorie: e.target.value })}>
                 <option value="">Sous-catégorie</option>
@@ -571,28 +574,17 @@ export default function CreerAnnonce() {
           )}
         </div>
 
-        {/* LOCALISATION (profil) */}
-        <div
-          style={{
-            padding: '18px 20px',
-            borderRadius: '14px',
-            border: '1px solid #cdeee3',
-            background: '#f8fcfa',
-          }}
-        >
+        {/* LOCALISATION */}
+        <div style={{ padding: '18px 20px', borderRadius: '14px', border: '1px solid #cdeee3', background: '#f8fcfa' }}>
           <div style={{ fontSize: '14px', color: '#333', lineHeight: 1.5 }}>
             {geoLoading ? (
               <span style={{ color: '#666' }}>Chargement de votre localisation…</span>
             ) : (
-              <>
-                📍 Votre localisation : <strong>{locationDisplayVille}</strong>, <strong>{locationDisplayPays}</strong>
-              </>
+              <>📍 Votre localisation : <strong>{locationDisplayVille}</strong>, <strong>{locationDisplayPays}</strong></>
             )}
           </div>
           <div style={{ marginTop: '10px', fontSize: '13px' }}>
-            <a href="/profil" style={{ color: '#1D9E75', fontWeight: 600, textDecoration: 'none' }}>
-              (modifier dans mon profil)
-            </a>
+            <a href="/profil" style={{ color: '#1D9E75', fontWeight: 600, textDecoration: 'none' }}>(modifier dans mon profil)</a>
           </div>
           {!geoLoading && (!profileVille || !profilePays) && (
             <div style={{ marginTop: '10px', fontSize: '12px', color: '#b45309', lineHeight: 1.45 }}>
@@ -614,7 +606,7 @@ export default function CreerAnnonce() {
         {/* ÉCHANGE SOUHAITÉ */}
         <div style={{ background: '#f7faf9', borderRadius: '16px', padding: '22px 22px 20px', border: '1px solid #e8efec' }}>
           <div style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', color: '#0F6E56', letterSpacing: '-0.01em' }}>
-            🔄 {mode === 'propose' ? 'Ce que je souhaite en échange' : "Ce que j’ai à offrir en échange"}
+            🔄 {mode === 'propose' ? 'Ce que je souhaite en échange' : "Ce que j'ai à offrir en échange"}
           </div>
 
           <div style={{ marginBottom: '22px' }}>
@@ -681,7 +673,8 @@ export default function CreerAnnonce() {
 
         {/* PHOTOS */}
         <div>
-          <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={handleAddPhotos} aria-label="Ajouter des photos d'annonce, maximum 3" style={{ display: 'none' }} />
+          <input ref={fileInputRef} type="file" accept="image/*" multiple onChange={handleAddPhotos}
+            aria-label="Ajouter des photos d'annonce, maximum 3" style={{ display: 'none' }} />
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '14px' }}>
             {selectedPhotos.map((p) => (
               <div key={p.id} style={{ position: 'relative', borderRadius: '12px', overflow: 'hidden', border: '1px solid #eee', background: '#fafafa', height: '110px' }}>
@@ -700,7 +693,7 @@ export default function CreerAnnonce() {
             )}
           </div>
           <div style={{ marginTop: '14px', fontSize: '13px', color: '#888' }}>
-            {selectedPhotos.length === 0 ? 'Photos optionnelles — jusqu’à 3 images.' : `${selectedPhotos.length} / 3 photo(s).`}
+            {selectedPhotos.length === 0 ? 'Photos optionnelles — jusqu\'à 3 images.' : `${selectedPhotos.length} / 3 photo(s).`}
           </div>
         </div>
 
