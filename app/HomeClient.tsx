@@ -412,7 +412,7 @@ export default function HomeClient({ annonces }: { annonces: Annonce[] }) {
 
               {/* NON CONNECTÉ */}
               {!userId && (
-                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <div className="hidden md:flex" style={{ display: "flex", gap: "8px", alignItems: "center" }}>
                   <a href="/connexion" style={{ padding: "6px 14px", border: "1px solid #ddd", borderRadius: "8px", textDecoration: "none", color: "#333", fontSize: "13px", fontWeight: "500" }}>
                     Connexion
                   </a>
@@ -466,8 +466,9 @@ export default function HomeClient({ annonces }: { annonces: Annonce[] }) {
 
             {/* DROITE : icônes + Déposer */}
             <div className="navRight" style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+              {/* DESKTOP (>=768px) : inchangé */}
               {!!userId && (
-                <>
+                <div className="hidden md:flex" style={{ gap: "8px", alignItems: "center" }}>
                   <a href="/decouvrir" title="Découvrir" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: "8px", background: "#E1F5EE", textDecoration: "none", fontSize: "18px", lineHeight: "1", color: "#0F6E56" }}>🔍</a>
                   <a href="/mes-matches" title="Mes matches" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: "8px", background: "white", textDecoration: "none", fontSize: "18px", lineHeight: "1" }}>🔄</a>
                   <div style={{ position: "relative", display: "inline-flex" }}>
@@ -498,9 +499,38 @@ export default function HomeClient({ annonces }: { annonces: Annonce[] }) {
                     )}
                   </div>
                   <a href="/favoris" title="Mes favoris" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: "8px", background: "white", textDecoration: "none", fontSize: "18px", lineHeight: "1" }}>❤️</a>
-                </>
+                </div>
               )}
-              <a href="/creer-annonce" style={{ padding: "8px 16px", border: "none", borderRadius: "8px", background: "#1D9E75", color: "white", textDecoration: "none", fontSize: "14px", fontWeight: "500", whiteSpace: "nowrap" }}>+ Déposer</a>
+
+              {/* MOBILE (<768px) : NON CONNECTÉ uniquement */}
+              {!userId && (
+                <div className="flex md:hidden" style={{ gap: "8px", alignItems: "center" }}>
+                  <a href="/connexion" style={{ padding: "8px 12px", border: "1px solid #ddd", borderRadius: "8px", textDecoration: "none", color: "#333", fontSize: "13px", fontWeight: "500", whiteSpace: "nowrap" }}>
+                    Connexion
+                  </a>
+                  <a href="/abonnement" style={{ padding: "8px 12px", border: "none", borderRadius: "8px", background: "#E8622A", color: "white", textDecoration: "none", fontSize: "13px", fontWeight: "600", whiteSpace: "nowrap" }}>
+                    Rejoindre 1€/mois
+                  </a>
+                </div>
+              )}
+
+              {/* Déposer : desktop inchangé, mobile seulement si connecté */}
+              <a
+                href="/creer-annonce"
+                className="hidden md:inline-flex"
+                style={{ padding: "8px 16px", border: "none", borderRadius: "8px", background: "#1D9E75", color: "white", textDecoration: "none", fontSize: "14px", fontWeight: "500", whiteSpace: "nowrap" }}
+              >
+                + Déposer
+              </a>
+              {!!userId && (
+                <a
+                  href="/creer-annonce"
+                  className="inline-flex md:hidden"
+                  style={{ padding: "8px 12px", border: "none", borderRadius: "8px", background: "#1D9E75", color: "white", textDecoration: "none", fontSize: "14px", fontWeight: "600", whiteSpace: "nowrap" }}
+                >
+                  + Déposer
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -760,7 +790,6 @@ export default function HomeClient({ annonces }: { annonces: Annonce[] }) {
         }
         @media (max-width: 768px) {
           .homeRoot { padding-left: 0 !important; padding-right: 0 !important; }
-          .navBtnOrangeDesktop { display: none !important; }
           .navRow { flex-wrap: nowrap !important; }
           .navLeft { flex-wrap: nowrap !important; min-width: 0 !important; gap: 10px !important; }
           .navRight { flex-shrink: 0 !important; }
