@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/supabase";
 import crypto from "crypto";
 
 export const runtime = "nodejs";
@@ -30,7 +29,7 @@ function hashIp(ip: string): string {
 }
 
 async function countUniqueVisitorsForAnnonce(params: {
-  supabase: ReturnType<typeof createRouteHandlerClient>;
+  supabaseClient: typeof supabase;
   annonce_id: string;
 }): Promise<number> {
   const uniques = new Set<string>();
@@ -40,7 +39,7 @@ async function countUniqueVisitorsForAnnonce(params: {
   // PostgREST pagine souvent les résultats (≈1000 lignes). On boucle pour être exact.
   while (true) {
     const to = from + pageSize - 1;
-    const { data, error } = await params.supabase
+    const { data, error } = await params.supabaseClient
       .from("vues_annonces")
       .select("user_id, ip_hash")
       .eq("annonce_id", params.annonce_id)
@@ -74,21 +73,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "annonce_id requis" }, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
-
-  const {
-    data: { session },
-    error: sessionError,
-  } = await supabase.auth.getSession();
-
-  if (sessionError) {
-    return NextResponse.json({ error: sessionError.message }, { status: 500 });
-  }
-
-  const user_id = session?.user?.id ?? null;
-
-  const ip = user_id ? null : getClientIp(req) ?? "unknown";
-  const ip_hash = user_id ? null : hashIp(ip);
+  // Dans ce projet, les routes API utilisent le client Supabase partagé (`@/app/supabase`).
+  // On ne peut donc pas déduire une session via cookies ici : on compte en "visiteur unique" par IP.
+  const user_id = null;
+  const ip = getClientIp(req) ?? "unknown";
+  const ip_hash = hashIp(ip);
 
   const sinceIso = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
@@ -100,8 +89,7 @@ export async function POST(req: NextRequest) {
     .limit(1);
 
   // Doublon = même user_id OU (si non connecté) même ip_hash dans les dernières 24h
-  if (user_id) existsQuery = existsQuery.eq("user_id", user_id);
-  else existsQuery = existsQuery.eq("ip_hash", ip_hash);
+  existsQuery = existsQuery.eq("ip_hash", ip_hash);
 
   const { data: existing, error: existsError } = await existsQuery;
   if (existsError) {
@@ -139,8 +127,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "annonce_id requis" }, { status: 400 });
   }
 
-  const supabase = createRouteHandlerClient({ cookies });
-
   const { count: total_vues, error: totalError } = await supabase
     .from("vues_annonces")
     .select("id", { count: "exact", head: true })
@@ -155,7 +141,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const visiteurs_uniques = await countUniqueVisitorsForAnnonce({
-      supabase,
+      supabaseClient: supabase,
       annonce_id,
     });
 
