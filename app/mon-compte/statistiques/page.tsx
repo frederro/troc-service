@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/app/supabase";
+import BadgeNiveau from "@/components/BadgeNiveau";
 
 type Annonce = {
   id: number;
@@ -86,6 +87,7 @@ function SkeletonTable({ rows = 6 }: { rows?: number }) {
 
 export default function StatistiquesPage() {
   const [userId, setUserId] = useState<string | null>(null);
+  const [points, setPoints] = useState<number | null>(null);
 
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
   const [loadingAnnonces, setLoadingAnnonces] = useState(true);
@@ -109,6 +111,12 @@ export default function StatistiquesPage() {
         }
         if (cancelled) return;
         setUserId(uid);
+
+        const { data: membreRow } = await supabase.from("membres").select("points").eq("id", uid).maybeSingle();
+        if (!cancelled) {
+          const p = typeof (membreRow as any)?.points === "number" ? (membreRow as any).points : null;
+          setPoints(p);
+        }
 
         const { data: rows, error: annoncesError } = await supabase
           .from("annonces")
@@ -210,6 +218,9 @@ export default function StatistiquesPage() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12, flexWrap: "wrap" }}>
         <div>
           <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 800, color: "#0F6E56" }}>📊 Mes statistiques</h1>
+          <div style={{ marginTop: 10 }}>
+            <BadgeNiveau points={points ?? 0} size="lg" />
+          </div>
           <p style={{ margin: "6px 0 0", color: "#666", fontSize: "13px", lineHeight: 1.5 }}>
             Vues totales et visiteurs uniques (compte ou IP), toutes périodes.
           </p>

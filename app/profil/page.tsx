@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/app/supabase";
+import BadgeNiveau from "@/components/BadgeNiveau";
 
 const PAYS_OPTIONS = [
   "France",
@@ -52,6 +53,7 @@ export default function ProfilPage() {
   const [codePostal, setCodePostal] = useState("");
   const [pays, setPays] = useState("France");
   const [savingLocation, setSavingLocation] = useState(false);
+  const [points, setPoints] = useState<number | null>(null);
 
   const [statsAnnonces, setStatsAnnonces] = useState<Record<number, AnnonceStats>>({});
   const [loadingStats, setLoadingStats] = useState(false);
@@ -64,6 +66,11 @@ export default function ProfilPage() {
         return;
       }
       setUser(data.user);
+
+      const { data: membreRow } = await supabase.from("membres").select("points").eq("id", data.user.id).maybeSingle();
+      const p = typeof (membreRow as any)?.points === "number" ? (membreRow as any).points : null;
+      setPoints(p);
+
       const md = data.user.user_metadata || {};
       setVille(typeof md.ville === "string" ? md.ville : "");
       setCodePostal(typeof md.code_postal === "string" ? md.code_postal : "");
@@ -214,6 +221,9 @@ export default function ProfilPage() {
         }}
       >
         <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>👤 Mon compte</h2>
+        <div style={{ marginTop: "-6px", marginBottom: "14px" }}>
+          <BadgeNiveau points={points ?? 0} size="lg" />
+        </div>
 
         <div style={{ marginBottom: "12px" }}>
           <span style={{ fontSize: "13px", color: "#999" }}>Email</span>
