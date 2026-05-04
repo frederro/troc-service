@@ -439,6 +439,7 @@ export default function HomeClient({ annonces }: { annonces: Annonce[] }) {
                       {[
                         { href: "/profil", label: "👤 Mon profil" },
                         { href: "/profil", label: "📋 Mes annonces" },
+                        { href: "/mon-compte/statistiques", label: "📊 Mes statistiques" },
                         { href: "/decouvrir", label: "🔍 Découvrir" },
                         { href: "/mes-matches", label: "🔄 Mes matches" },
                         { href: "/favoris", label: "❤️ Mes favoris" },

@@ -32,6 +32,17 @@ type Annonce = {
   created_at?: string | null;
 };
 
+type VueStats = {
+  total_vues: number;
+  visiteurs_uniques: number;
+};
+
+type AnnonceStats = {
+  annonce_id: number;
+  total_vues: number;
+  visiteurs_uniques: number;
+};
+
 export default function ProfilPage() {
   const [user, setUser] = useState<any>(null);
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
@@ -41,6 +52,10 @@ export default function ProfilPage() {
   const [codePostal, setCodePostal] = useState("");
   const [pays, setPays] = useState("France");
   const [savingLocation, setSavingLocation] = useState(false);
+
+  const [statsAnnonces, setStatsAnnonces] = useState<Record<number, AnnonceStats>>({});
+  const [loadingStats, setLoadingStats] = useState(false);
+  const [statsError, setStatsError] = useState<string>("");
 
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data }) => {
@@ -64,6 +79,70 @@ export default function ProfilPage() {
       setLoading(false);
     });
   }, []);
+
+  async function fetchStatsAnnonces(params: { annonces: Annonce[]; signal?: AbortSignal }): Promise<Record<number, AnnonceStats>> {
+    const entries = await Promise.all(
+      params.annonces.map(async (a) => {
+        const res = await fetch(`/api/vues?annonce_id=${encodeURIComponent(String(a.id))}`, {
+          method: "GET",
+          signal: params.signal,
+          headers: { "accept": "application/json" },
+        });
+
+        if (!res.ok) {
+          let msg = "Erreur lors du chargement des statistiques";
+          try {
+            const j = (await res.json()) as { error?: string };
+            if (typeof j?.error === "string" && j.error.trim()) msg = j.error.trim();
+          } catch {
+            // ignore JSON parse errors
+          }
+          throw new Error(msg);
+        }
+
+        const json = (await res.json()) as Partial<VueStats>;
+        const total_vues = typeof json.total_vues === "number" ? json.total_vues : 0;
+        const visiteurs_uniques = typeof json.visiteurs_uniques === "number" ? json.visiteurs_uniques : 0;
+
+        const stats: AnnonceStats = { annonce_id: a.id, total_vues, visiteurs_uniques };
+        return [a.id, stats] as const;
+      }),
+    );
+
+    return Object.fromEntries(entries);
+  }
+
+  useEffect(() => {
+    if (loading) return;
+    if (annonces.length === 0) {
+      setStatsAnnonces({});
+      setStatsError("");
+      setLoadingStats(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    setLoadingStats(true);
+    setStatsError("");
+
+    fetchStatsAnnonces({ annonces, signal: controller.signal })
+      .then((map) => {
+        if (controller.signal.aborted) return;
+        setStatsAnnonces(map);
+      })
+      .catch((e) => {
+        if (controller.signal.aborted) return;
+        const msg = e instanceof Error ? e.message : "Erreur lors du chargement des statistiques";
+        setStatsError(msg);
+        setStatsAnnonces({});
+      })
+      .finally(() => {
+        if (controller.signal.aborted) return;
+        setLoadingStats(false);
+      });
+
+    return () => controller.abort();
+  }, [loading, annonces]);
 
   const handleDeconnexion = async () => {
     await supabase.auth.signOut();
@@ -302,6 +381,132 @@ export default function ProfilPage() {
         >
           {savingLocation ? "Enregistrement…" : "Enregistrer"}
         </button>
+      </div>
+
+      <div
+        style={{
+          background: "#fff",
+          border: "1px solid #eee",
+          borderRadius: "12px",
+          padding: "24px",
+          marginBottom: "24px",
+        }}
+      >
+        <h2 style={{ fontSize: "18px", fontWeight: "700", marginBottom: "10px", color: "#1D9E75" }}>
+          📊 Statistiques de mes annonces
+        </h2>
+        <p style={{ fontSize: "13px", color: "#666", marginBottom: "16px", lineHeight: 1.5 }}>
+          Vues totales et visiteurs uniques (uniques = compte ou IP), toutes périodes.
+        </p>
+
+        {annonces.length === 0 ? (
+          <div
+            style={{
+              background: "#E1F5EE",
+              border: "1px solid rgba(15,110,86,0.15)",
+              color: "#0F6E56",
+              padding: "14px 16px",
+              borderRadius: "10px",
+              fontSize: "13px",
+              fontWeight: 600,
+            }}
+          >
+            Vous n'avez pas encore d'annonces
+          </div>
+        ) : loadingStats ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {Array.from({ length: Math.min(5, Math.max(2, annonces.length)) }).map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  border: "1px solid #E1F5EE",
+                  borderRadius: "12px",
+                  padding: "14px 14px",
+                  background: "linear-gradient(90deg, #E1F5EE 0%, #f7fffb 50%, #E1F5EE 100%)",
+                  backgroundSize: "200% 100%",
+                  animation: "skeleton 1.2s ease-in-out infinite",
+                }}
+              >
+                <div style={{ height: "14px", width: "55%", borderRadius: "6px", background: "rgba(15,110,86,0.14)", marginBottom: "10px" }} />
+                <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                  <div style={{ height: "12px", width: "120px", borderRadius: "6px", background: "rgba(15,110,86,0.12)" }} />
+                  <div style={{ height: "12px", width: "150px", borderRadius: "6px", background: "rgba(15,110,86,0.12)" }} />
+                  <div style={{ height: "12px", width: "160px", borderRadius: "6px", background: "rgba(15,110,86,0.12)" }} />
+                </div>
+              </div>
+            ))}
+            <style>{`
+              @keyframes skeleton {
+                0% { background-position: 0% 0; }
+                100% { background-position: 200% 0; }
+              }
+            `}</style>
+          </div>
+        ) : statsError ? (
+          <div
+            style={{
+              background: "#fff5f2",
+              border: "1px solid rgba(232,98,42,0.25)",
+              color: "#E8622A",
+              padding: "12px 14px",
+              borderRadius: "10px",
+              fontSize: "13px",
+              fontWeight: 600,
+            }}
+          >
+            {statsError}
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            {annonces.map((a) => {
+              const stats = statsAnnonces[a.id];
+              const created = a.created_at
+                ? new Date(a.created_at).toLocaleDateString("fr-FR", { year: "numeric", month: "short", day: "numeric" })
+                : "—";
+              return (
+                <div
+                  key={a.id}
+                  style={{
+                    border: "1px solid #E1F5EE",
+                    borderRadius: "12px",
+                    padding: "14px 14px",
+                    background: "#fbfffd",
+                  }}
+                >
+                  <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "8px", color: "#0F6E56" }}>
+                    {a.titre || "Annonce"}
+                  </div>
+                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", fontSize: "13px", color: "#333" }}>
+                    <span
+                      style={{
+                        padding: "6px 10px",
+                        borderRadius: "999px",
+                        background: "#E1F5EE",
+                        color: "#0F6E56",
+                        fontWeight: 700,
+                      }}
+                    >
+                      👁 {stats?.total_vues ?? 0} vues totales
+                    </span>
+                    <span
+                      style={{
+                        padding: "6px 10px",
+                        borderRadius: "999px",
+                        background: "#f3fbf7",
+                        border: "1px solid #E1F5EE",
+                        color: "#0F6E56",
+                        fontWeight: 700,
+                      }}
+                    >
+                      👤 {stats?.visiteurs_uniques ?? 0} visiteurs uniques
+                    </span>
+                    <span style={{ padding: "6px 0", color: "#666", fontWeight: 600 }}>Créée le {created}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>📋 Mes annonces ({annonces.length})</h2>

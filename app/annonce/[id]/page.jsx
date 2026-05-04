@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import AnnoncePhotos from "@/components/AnnoncePhotos";
 import FavorisBouton from "@/components/FavorisBouton";
 import AnnonceEvaluerModal from "@/components/AnnonceEvaluerModal";
+import AnnonceViewTracker from "@/components/AnnonceViewTracker";
 
 const ANNONCE_SELECT =
   "id, titre, description, categorie, portee, localisation, echange_souhaite, ouvert_propositions, membre_nom, photos, user_id";
@@ -32,6 +33,8 @@ export default async function FicheAnnonce({ params }) {
 
   return (
     <main style={{ fontFamily: "sans-serif", maxWidth: "700px", margin: "0 auto", padding: "20px" }}>
+      <AnnonceViewTracker annonceId={Number(annonce.id)} annonceUserId={ownerId} />
+
       <nav
         style={{
           display: "flex",
