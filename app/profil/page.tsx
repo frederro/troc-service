@@ -53,7 +53,7 @@ export default function ProfilPage() {
   const [codePostal, setCodePostal] = useState("");
   const [pays, setPays] = useState("France");
   const [savingLocation, setSavingLocation] = useState(false);
-  const [points, setPoints] = useState<number | null>(null);
+  const [points, setPoints] = useState(0);
 
   const [statsAnnonces, setStatsAnnonces] = useState<Record<number, AnnonceStats>>({});
   const [loadingStats, setLoadingStats] = useState(false);
@@ -67,9 +67,9 @@ export default function ProfilPage() {
       }
       setUser(data.user);
 
-      const { data: membreRow } = await supabase.from("membres").select("points").eq("id", data.user.id).maybeSingle();
-      const p = typeof (membreRow as any)?.points === "number" ? (membreRow as any).points : null;
-      setPoints(p);
+      const { data: pointsRow } = await supabase.from("membres").select("points").eq("id", data.user.id).single();
+      const points = (pointsRow as any)?.points ?? 0;
+      setPoints(points);
 
       const md = data.user.user_metadata || {};
       setVille(typeof md.ville === "string" ? md.ville : "");
@@ -220,9 +220,9 @@ export default function ProfilPage() {
           marginBottom: "30px",
         }}
       >
-        <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>👤 Mon compte</h2>
+        <h2 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>👤 Mon Profil</h2>
         <div style={{ marginTop: "-6px", marginBottom: "14px" }}>
-          <BadgeNiveau points={points ?? 0} size="lg" />
+          <BadgeNiveau points={points} size="lg" />
         </div>
 
         <div style={{ marginBottom: "12px" }}>
