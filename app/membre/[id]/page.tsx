@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/app/supabase";
+import BadgeNiveau from "@/components/BadgeNiveau";
 
 type Annonce = {
   id: number;
@@ -69,6 +70,7 @@ export default function MembrePublicPage({ params }: { params: Promise<{ id: str
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+  const [points, setPoints] = useState<number>(0);
   const [favorisSet, setFavorisSet] = useState<Set<number>>(new Set());
   const [scrolled, setScrolled] = useState(false);
   const [menuCompteOpen, setMenuCompteOpen] = useState(false);
@@ -113,6 +115,12 @@ export default function MembrePublicPage({ params }: { params: Promise<{ id: str
           }
         }
 
+        const { data: memberRow } = await supabase.from("membres").select("points").eq("id", memberId).maybeSingle();
+        if (!cancelled) {
+          const p = Number((memberRow as any)?.points);
+          setPoints(Number.isFinite(p) ? p : 0);
+        }
+
         const { data, error } = await supabase
           .from("annonces")
           .select("*")
@@ -154,6 +162,7 @@ export default function MembrePublicPage({ params }: { params: Promise<{ id: str
       } catch {
         if (!cancelled) {
           setAnnonces([]);
+          setPoints(0);
           setEvalSummary(null);
           setEvalDerniers([]);
         }
@@ -470,6 +479,11 @@ export default function MembrePublicPage({ params }: { params: Promise<{ id: str
                 <div style={{ fontSize: "22px", fontWeight: 600, marginBottom: "2px" }}>
                   {loading ? "Chargement..." : memberNom}
                 </div>
+                {!loading && (
+                  <div style={{ marginTop: "8px" }}>
+                    <BadgeNiveau points={points} size="md" />
+                  </div>
+                )}
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                   {!!memberLocalisation && (
                     <span
