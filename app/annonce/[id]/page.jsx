@@ -2,7 +2,6 @@ import { supabase } from "@/app/supabase";
 import { notFound } from "next/navigation";
 import AnnoncePhotos from "@/components/AnnoncePhotos";
 import FavorisBouton from "@/components/FavorisBouton";
-import AnnonceEvaluerModal from "@/components/AnnonceEvaluerModal";
 import AnnonceViewTracker from "@/components/AnnonceViewTracker";
 
 const ANNONCE_SELECT =
@@ -30,6 +29,7 @@ export default async function FicheAnnonce({ params }) {
   // Note: l’email du destinataire n’est pas disponible côté client avec la clé anon.
   // Si vous ajoutez plus tard l’email via profils ou une route admin, vous pourrez passer `destinataire_email=...` ici.
   const contacterUrl = `/contacter/${annonce.id}?destinataire=${encodeURIComponent(String(annonce.membre_nom ?? ""))}&titre=${encodeURIComponent(String(annonce.titre ?? ""))}&destinataire_id=${destinataireIdParam}`;
+  const evaluerUrl = `/evaluer/${annonce.id}?membre=${encodeURIComponent(String(annonce.membre_nom ?? ""))}&titre=${encodeURIComponent(String(annonce.titre ?? ""))}`;
 
   return (
     <main style={{ fontFamily: "sans-serif", maxWidth: "700px", margin: "0 auto", padding: "20px" }}>
@@ -166,12 +166,25 @@ export default async function FicheAnnonce({ params }) {
           Contacter & proposer un échange
         </a>
         {ownerId ? (
-          <AnnonceEvaluerModal
-            annonceId={Number(annonce.id)}
-            annonceUserId={ownerId}
-            membreNom={annonce.membre_nom || "Membre"}
-            titre={annonce.titre || "Annonce"}
-          />
+          <a
+            href={evaluerUrl}
+            style={{
+              flex: "1 1 200px",
+              padding: "14px",
+              background: "white",
+              color: "#0F6E56",
+              border: "1px solid #9FE1CB",
+              borderRadius: "8px",
+              fontSize: "15px",
+              fontWeight: "500",
+              cursor: "pointer",
+              textDecoration: "none",
+              textAlign: "center",
+              display: "block",
+            }}
+          >
+            ⭐ Évaluer cet échange
+          </a>
         ) : (
           <div
             role="status"
