@@ -412,7 +412,7 @@ export default function HomeClient({ annonces }: { annonces: Annonce[] }) {
 
               {/* NON CONNECTÉ */}
               {!userId && (
-                <div className="hidden md:flex" style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <div className="hidden md:flex" style={{ gap: "8px", alignItems: "center" }}>
                   <a href="/connexion" style={{ padding: "6px 14px", border: "1px solid #ddd", borderRadius: "8px", textDecoration: "none", color: "#333", fontSize: "13px", fontWeight: "500" }}>
                     Connexion
                   </a>
