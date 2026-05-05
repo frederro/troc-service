@@ -8,8 +8,58 @@ import BadgeNiveau from "@/components/BadgeNiveau";
 const ANNONCE_SELECT =
   "id, titre, description, categorie, portee, localisation, echange_souhaite, ouvert_propositions, membre_nom, photos, user_id";
 
+export async function generateMetadata({ params }) {
+  const id = params?.id;
+  const numericId = Number.parseInt(String(id), 10);
+
+  const fallback = {
+    title: "Annonce — Troc-Service",
+    description: "Consultez cette annonce sur Troc-Service.",
+  };
+
+  if (!Number.isFinite(numericId)) {
+    return fallback;
+  }
+
+  const { data: annonce } = await supabase
+    .from("annonces")
+    .select("titre, description, membre_nom, localisation, photos, echange_souhaite")
+    .eq("id", numericId)
+    .maybeSingle();
+
+  if (!annonce) return fallback;
+
+  const titre = annonce.titre ?? "Annonce";
+  const membreNom = annonce.membre_nom ?? "Un membre";
+  const localisation = annonce.localisation ?? "France";
+  const echangeSouhaite = annonce.echange_souhaite ?? "Non précisé";
+
+  const description =
+    annonce.description?.slice?.(0, 180) ||
+    `${membreNom} propose "${titre}" à ${localisation}. Cherche : ${echangeSouhaite}. Échangez sur Troc-Service.`;
+  const image = annonce.photos?.[0] ?? "https://www.troc-service.eu/og-default.png";
+
+  return {
+    title: `${titre} — Troc-Service`,
+    description,
+    openGraph: {
+      title: `${titre} — Troc-Service`,
+      description,
+      images: [{ url: image }],
+      url: `https://www.troc-service.eu/annonce/${numericId}`,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${titre} — Troc-Service`,
+      description,
+      images: [image],
+    },
+  };
+}
+
 export default async function FicheAnnonce({ params }) {
-  const { id } = await params;
+  const { id } = params;
   const numericId = Number.parseInt(String(id), 10);
   if (!Number.isFinite(numericId)) {
     return notFound();
