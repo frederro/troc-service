@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://www.troc-service.eu/sitemap.xml

@@ -23,14 +23,13 @@ function createServerSupabase() {
 }
 
 export async function generateMetadata({ params }) {
-  const id = params?.id;
-  const numericId = Number.parseInt(String(id), 10);
-
   const fallback = {
     title: "Annonce — Troc-Service",
     description: "Consultez cette annonce sur Troc-Service.",
   };
 
+  const id = params?.id;
+  const numericId = Number.parseInt(String(id), 10);
   if (!Number.isFinite(numericId)) {
     return fallback;
   }
@@ -38,25 +37,20 @@ export async function generateMetadata({ params }) {
   const supabase = createServerSupabase();
   const { data: annonce } = await supabase
     .from("annonces")
-    .select("titre, description, membre_nom, localisation, photos, echange_souhaite")
+    .select("titre, membre_nom, localisation, photos, echange_souhaite")
     .eq("id", numericId)
     .single();
 
   if (!annonce) return fallback;
 
-  const titre = annonce.titre ?? "Annonce";
-  const membreNom = annonce.membre_nom ?? "Un membre";
-  const localisation = annonce.localisation ?? "France";
-  const echangeSouhaite = annonce.echange_souhaite ?? "Non précisé";
-
   return {
     title: annonce.titre,
-    description: `${membreNom} propose "${titre}" à ${localisation}. Cherche : ${echangeSouhaite}.`,
+    description: `${annonce.membre_nom} propose "${annonce.titre}" à ${annonce.localisation}. Cherche : ${annonce.echange_souhaite}.`,
     openGraph: {
       title: annonce.titre,
-      description: `${membreNom} propose "${titre}" à ${localisation}.`,
+      description: `${annonce.membre_nom} propose à ${annonce.localisation}`,
       images: annonce.photos?.[0] ? [{ url: annonce.photos[0] }] : [],
-      url: `https://www.troc-service.eu/annonce/${numericId}`,
+      url: `https://www.troc-service.eu/annonce/${params.id}`,
     },
   };
 }
