@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import AnnoncePhotos from "@/components/AnnoncePhotos";
 import FavorisBouton from "@/components/FavorisBouton";
 import AnnonceViewTracker from "@/components/AnnonceViewTracker";
+import BadgeNiveau from "@/components/BadgeNiveau";
 
 const ANNONCE_SELECT =
   "id, titre, description, categorie, portee, localisation, echange_souhaite, ouvert_propositions, membre_nom, photos, user_id";
@@ -23,6 +24,11 @@ export default async function FicheAnnonce({ params }) {
   if (fetchError || !annonce) {
     return notFound();
   }
+
+  const { data: membreData } = annonce.user_id
+    ? await supabase.from("membres").select("points").eq("id", annonce.user_id).single()
+    : { data: null };
+  const pointsMembre = membreData?.points ?? 0;
 
   const ownerId = annonce.user_id != null ? String(annonce.user_id) : null;
   const destinataireIdParam = ownerId ?? "";
@@ -131,16 +137,19 @@ export default async function FicheAnnonce({ params }) {
           {annonce.membre_nom?.charAt(0).toUpperCase()}
         </div>
         <div>
-          {ownerId ? (
-            <a
-              href={`/membre/${ownerId}`}
-              style={{ fontWeight: "500", fontSize: "15px", color: "#0F6E56", textDecoration: "underline" }}
-            >
-              {annonce.membre_nom}
-            </a>
-          ) : (
-            <span style={{ fontWeight: "500", fontSize: "15px", color: "#666" }}>{annonce.membre_nom}</span>
-          )}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+            {ownerId ? (
+              <a
+                href={`/membre/${ownerId}`}
+                style={{ fontWeight: "500", fontSize: "15px", color: "#0F6E56", textDecoration: "underline" }}
+              >
+                {annonce.membre_nom}
+              </a>
+            ) : (
+              <span style={{ fontWeight: "500", fontSize: "15px", color: "#666" }}>{annonce.membre_nom}</span>
+            )}
+            <BadgeNiveau points={pointsMembre} size="sm" />
+          </div>
           <div style={{ fontSize: "12px", color: "#999" }}>{annonce.localisation}</div>
         </div>
       </div>
