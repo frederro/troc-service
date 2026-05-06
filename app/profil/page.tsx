@@ -216,6 +216,19 @@ export default function ProfilPage() {
 
   if (loading) return <p style={{ padding: "40px", fontFamily: "sans-serif" }}>Chargement...</p>;
 
+  const isEmptyTaille = (v: unknown) => {
+    if (v === null || v === undefined) return true;
+    if (typeof v !== "string") return false;
+    return v.trim() === "";
+  };
+
+  const shouldShowTaillesSuggestion =
+    isEmptyTaille((tailles as any)?.taille_haut) &&
+    isEmptyTaille((tailles as any)?.taille_bas_fr) &&
+    isEmptyTaille((tailles as any)?.taille_bas_us) &&
+    isEmptyTaille((tailles as any)?.pointure_eu) &&
+    isEmptyTaille((tailles as any)?.pointure_us);
+
   return (
     <main style={{ fontFamily: "sans-serif", maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
       <nav
@@ -661,6 +674,24 @@ export default function ProfilPage() {
         </div>
       )}
 
+      {shouldShowTaillesSuggestion && (
+        <div
+          style={{
+            background: "#E1F5EE",
+            borderLeft: "4px solid #1D9E75",
+            color: "#0F6E56",
+            padding: "12px 16px",
+            borderRadius: "8px",
+            marginTop: "18px",
+            marginBottom: "12px",
+            fontSize: "13px",
+            fontWeight: 600,
+            lineHeight: 1.4,
+          }}
+        >
+          💡 Complétez vos tailles pour recevoir des suggestions personnalisées de vêtements et chaussures à votre taille !
+        </div>
+      )}
       <TaillesSelector valeurs={tailles} onChange={handleTailleChange} />
 
       <div style={{ borderTop: "1px solid #eee", padding: "20px 0", marginTop: "40px", fontSize: "11px", color: "#999" }}>
