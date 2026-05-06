@@ -110,8 +110,7 @@ export default function ProfilPage() {
     });
   }, []);
 
-  const handleTailleChange = async (champ: keyof Tailles, valeur: string) => {
-    if (!user?.id) return;
+  const handleTailleChange = async (champ: string, valeur: string) => {
     setTailles((prev) => ({ ...prev, [champ]: valeur }));
     await supabase.from("membres").update({ [champ]: valeur }).eq("id", user.id);
   };
