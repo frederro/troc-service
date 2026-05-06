@@ -15,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: { default: "Troc-Service", template: "%s — Troc-Service" },
   description: "Échangez objets et services entre particuliers sur Troc-Service",
+  manifest: "/manifest.json",
+  themeColor: "#1D9E75",
+  icons: {
+    apple: "/Logo_192.png",
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +32,9 @@ export default function RootLayout({
       lang="fr"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="apple-touch-icon" href="/Logo_192.png" />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );
