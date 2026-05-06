@@ -70,6 +70,7 @@ export default function ProfilPage() {
     pointure_eu: "",
     pointure_us: "",
   });
+  const [taillesChargees, setTaillesChargees] = useState(false);
 
   const [statsAnnonces, setStatsAnnonces] = useState<Record<number, AnnonceStats>>({});
   const [loadingStats, setLoadingStats] = useState(false);
@@ -93,6 +94,7 @@ export default function ProfilPage() {
         .eq("id", data.user.id)
         .single();
       if (taillesRow) setTailles(taillesRow as unknown as Tailles);
+      setTaillesChargees(true);
 
       const md = data.user.user_metadata || {};
       setVille(typeof md.ville === "string" ? md.ville : "");
@@ -674,7 +676,7 @@ export default function ProfilPage() {
         </div>
       )}
 
-      {shouldShowTaillesSuggestion && (
+      {taillesChargees && shouldShowTaillesSuggestion && (
         <div
           style={{
             background: "#E1F5EE",
