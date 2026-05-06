@@ -45,6 +45,14 @@ type AnnonceStats = {
   visiteurs_uniques: number;
 };
 
+type Tailles = {
+  taille_haut: string;
+  taille_bas_fr: string;
+  taille_bas_us: string;
+  pointure_eu: string;
+  pointure_us: string;
+};
+
 export default function ProfilPage() {
   const [user, setUser] = useState<any>(null);
   const [annonces, setAnnonces] = useState<Annonce[]>([]);
@@ -55,7 +63,13 @@ export default function ProfilPage() {
   const [pays, setPays] = useState("France");
   const [savingLocation, setSavingLocation] = useState(false);
   const [points, setPoints] = useState(0);
-  const [tailles, setTailles] = useState<any>({});
+  const [tailles, setTailles] = useState<Tailles>({
+    taille_haut: "",
+    taille_bas_fr: "",
+    taille_bas_us: "",
+    pointure_eu: "",
+    pointure_us: "",
+  });
 
   const [statsAnnonces, setStatsAnnonces] = useState<Record<number, AnnonceStats>>({});
   const [loadingStats, setLoadingStats] = useState(false);
@@ -78,13 +92,7 @@ export default function ProfilPage() {
         .select("taille_haut, taille_bas_fr, taille_bas_us, pointure_eu, pointure_us")
         .eq("id", data.user.id)
         .single();
-      setTailles({
-        taille_haut: (taillesRow as any)?.taille_haut ?? "",
-        taille_bas_fr: (taillesRow as any)?.taille_bas_fr ?? "",
-        taille_bas_us: (taillesRow as any)?.taille_bas_us ?? "",
-        pointure_eu: (taillesRow as any)?.pointure_eu ?? "",
-        pointure_us: (taillesRow as any)?.pointure_us ?? "",
-      });
+      if (taillesRow) setTailles(taillesRow as unknown as Tailles);
 
       const md = data.user.user_metadata || {};
       setVille(typeof md.ville === "string" ? md.ville : "");
@@ -102,23 +110,10 @@ export default function ProfilPage() {
     });
   }, []);
 
-  const handleTailleChange = async (champ: string, valeur: string) => {
+  const handleTailleChange = async (champ: keyof Tailles, valeur: string) => {
     if (!user?.id) return;
-
-    const next = {
-      ...(tailles || {}),
-      [champ]: valeur,
-    };
-    setTailles(next);
-
-    const payload: Record<string, string | null> = {
-      [champ]: valeur && valeur.trim() ? valeur.trim() : null,
-    };
-
-    const { error } = await supabase.from("membres").update(payload).eq("id", user.id);
-    if (error) {
-      alert("Impossible d'enregistrer la taille : " + error.message);
-    }
+    setTailles((prev) => ({ ...prev, [champ]: valeur }));
+    await supabase.from("membres").update({ [champ]: valeur }).eq("id", user.id);
   };
 
   async function fetchStatsAnnonces(params: { annonces: Annonce[]; signal?: AbortSignal }): Promise<Record<number, AnnonceStats>> {
@@ -425,10 +420,6 @@ export default function ProfilPage() {
         >
           {savingLocation ? "Enregistrement…" : "Enregistrer"}
         </button>
-
-        <div style={{ marginTop: "18px" }}>
-          <TaillesSelector valeurs={tailles} onChange={handleTailleChange} />
-        </div>
       </div>
 
       <div
@@ -670,6 +661,8 @@ export default function ProfilPage() {
           ))}
         </div>
       )}
+
+      <TaillesSelector valeurs={tailles} onChange={handleTailleChange} />
 
       <div style={{ borderTop: "1px solid #eee", padding: "20px 0", marginTop: "40px", fontSize: "11px", color: "#999" }}>
         Troc-Service —{" "}
