@@ -406,8 +406,10 @@ export default function HomeClient({ annonces }: { annonces: Annonce[] }) {
             {/* GAUCHE : logo + état compte */}
             <div className="navLeft" style={{ display: "flex", alignItems: "center", gap: "14px" }}>
               <a href="/" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none", color: "inherit" }}>
-                <div style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#1D9E75" }} />
-                <span style={{ fontWeight: "600", fontSize: "18px" }}>Troc-Service</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <img src="/Logo_192.png" alt="Troc-Service" style={{ width: '32px', height: '32px', borderRadius: '8px' }} />
+                  <span>Troc-Service</span>
+                </div>
               </a>
 
               {/* NON CONNECTÉ */}
