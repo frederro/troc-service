@@ -207,6 +207,7 @@ export default function CreerAnnonce() {
   const selectedPhotosRef = useRef<SelectedPhoto[]>([]);
   const [mode, setMode] = useState<'propose' | 'cherche'>('propose');
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [tailleAnnonce, setTailleAnnonce] = useState<string>("");
 
   const [formData, setFormData] = useState({
     titre: '',
@@ -229,6 +230,62 @@ export default function CreerAnnonce() {
   const sousCategoriesSouhaitees = CATEGORIES_DATA[formData.categorie_souhaitee] || [];
 
   const photoFiles = useMemo(() => selectedPhotos.map((p) => p.file), [selectedPhotos]);
+
+  const tailleKind = useMemo(() => {
+    const s = `${formData.categorie} ${formData.sous_categorie}`.toLowerCase();
+    const keywords = ["vêtement", "vêtements", "mode", "haut", "bas", "chaussure", "chaussures", "accessoire", "accessoires"];
+    const isRelevant = keywords.some((k) => s.includes(k));
+    if (!isRelevant) return null as null | "haut" | "bas" | "chaussure" | "accessoire";
+    if (s.includes("chaussure")) return "chaussure";
+    if (s.includes("haut")) return "haut";
+    if (s.includes("bas")) return "bas";
+    if (s.includes("accessoire")) return "accessoire";
+    if (s.includes("vêtement") || s.includes("mode")) {
+      // fallback for vêtements/mode without explicit sous-type
+      return "haut";
+    }
+    return null;
+  }, [formData.categorie, formData.sous_categorie]);
+
+  const tailleOptions = useMemo(() => {
+    if (!tailleKind) return null as null | { label: string; groups?: { label: string; options: string[] }[]; options?: string[] };
+
+    if (tailleKind === "haut") {
+      return { label: "Taille (haut)", options: ["XS", "S", "M", "L", "XL", "XXL", "3XL"] };
+    }
+
+    if (tailleKind === "bas") {
+      const fr = ["34", "36", "38", "40", "42", "44", "46", "48"].map((v) => `FR ${v}`);
+      const us = ["24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "36", "38"].map((v) => `US ${v}`);
+      return {
+        label: "Taille (bas)",
+        groups: [
+          { label: "Tailles FR", options: fr },
+          { label: "Tailles US", options: us },
+        ],
+      };
+    }
+
+    if (tailleKind === "chaussure") {
+      const eu: string[] = [];
+      for (let x = 36; x <= 46 + 1e-9; x += 0.5) eu.push(`EU ${Number.isInteger(x) ? String(x) : x.toFixed(1)}`);
+      const us: string[] = [];
+      for (let x = 4; x <= 13 + 1e-9; x += 0.5) us.push(`US ${Number.isInteger(x) ? String(x) : x.toFixed(1)}`);
+      return {
+        label: "Pointure",
+        groups: [
+          { label: "Pointures EU", options: eu },
+          { label: "Pointures US", options: us },
+        ],
+      };
+    }
+
+    return { label: "Taille", options: ["Unique"] };
+  }, [tailleKind]);
+
+  useEffect(() => {
+    if (!tailleKind && tailleAnnonce) setTailleAnnonce("");
+  }, [tailleKind, tailleAnnonce]);
 
   useEffect(() => {
     let cancelled = false;
@@ -398,6 +455,7 @@ export default function CreerAnnonce() {
           latitude,
           longitude,
           photos: [],
+          taille: tailleAnnonce && tailleAnnonce.trim() ? tailleAnnonce.trim() : null,
           user_id,
           mode,
         }])
@@ -573,6 +631,38 @@ export default function CreerAnnonce() {
             </div>
           )}
         </div>
+
+        {/* TAILLE (optionnel) */}
+        {tailleOptions && (
+          <div>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '8px', color: '#444' }}>
+              Taille <span style={{ fontSize: '12px', fontWeight: 700, color: '#999' }}>(optionnel)</span>
+            </label>
+            <select
+              value={tailleAnnonce}
+              aria-label="Taille (optionnel)"
+              onChange={(e) => setTailleAnnonce(e.target.value)}
+              style={{ width: '100%', padding: '14px 12px', borderRadius: '12px', border: '1px solid #e0e0e0', background: 'white', fontSize: '14px' }}
+            >
+              <option value="">—</option>
+              {tailleOptions.groups
+                ? tailleOptions.groups.map((g) => (
+                    <optgroup key={g.label} label={g.label}>
+                      {g.options.map((o) => (
+                        <option key={o} value={o}>
+                          {o}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))
+                : (tailleOptions.options || []).map((o) => (
+                    <option key={o} value={o}>
+                      {o}
+                    </option>
+                  ))}
+            </select>
+          </div>
+        )}
 
         {/* LOCALISATION */}
         <div style={{ padding: '18px 20px', borderRadius: '14px', border: '1px solid #cdeee3', background: '#f8fcfa' }}>

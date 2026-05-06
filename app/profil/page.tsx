@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/app/supabase";
 import BadgeNiveau from "@/components/BadgeNiveau";
+import TaillesSelector from "@/components/TaillesSelector";
 
 const PAYS_OPTIONS = [
   "France",
@@ -54,6 +55,7 @@ export default function ProfilPage() {
   const [pays, setPays] = useState("France");
   const [savingLocation, setSavingLocation] = useState(false);
   const [points, setPoints] = useState(0);
+  const [tailles, setTailles] = useState<any>({});
 
   const [statsAnnonces, setStatsAnnonces] = useState<Record<number, AnnonceStats>>({});
   const [loadingStats, setLoadingStats] = useState(false);
@@ -71,6 +73,19 @@ export default function ProfilPage() {
       const points = (pointsRow as any)?.points ?? 0;
       setPoints(points);
 
+      const { data: taillesRow } = await supabase
+        .from("membres")
+        .select("taille_haut, taille_bas_fr, taille_bas_us, pointure_eu, pointure_us")
+        .eq("id", data.user.id)
+        .single();
+      setTailles({
+        taille_haut: (taillesRow as any)?.taille_haut ?? "",
+        taille_bas_fr: (taillesRow as any)?.taille_bas_fr ?? "",
+        taille_bas_us: (taillesRow as any)?.taille_bas_us ?? "",
+        pointure_eu: (taillesRow as any)?.pointure_eu ?? "",
+        pointure_us: (taillesRow as any)?.pointure_us ?? "",
+      });
+
       const md = data.user.user_metadata || {};
       setVille(typeof md.ville === "string" ? md.ville : "");
       setCodePostal(typeof md.code_postal === "string" ? md.code_postal : "");
@@ -86,6 +101,25 @@ export default function ProfilPage() {
       setLoading(false);
     });
   }, []);
+
+  const handleTailleChange = async (champ: string, valeur: string) => {
+    if (!user?.id) return;
+
+    const next = {
+      ...(tailles || {}),
+      [champ]: valeur,
+    };
+    setTailles(next);
+
+    const payload: Record<string, string | null> = {
+      [champ]: valeur && valeur.trim() ? valeur.trim() : null,
+    };
+
+    const { error } = await supabase.from("membres").update(payload).eq("id", user.id);
+    if (error) {
+      alert("Impossible d'enregistrer la taille : " + error.message);
+    }
+  };
 
   async function fetchStatsAnnonces(params: { annonces: Annonce[]; signal?: AbortSignal }): Promise<Record<number, AnnonceStats>> {
     const entries = await Promise.all(
@@ -391,6 +425,10 @@ export default function ProfilPage() {
         >
           {savingLocation ? "Enregistrement…" : "Enregistrer"}
         </button>
+
+        <div style={{ marginTop: "18px" }}>
+          <TaillesSelector valeurs={tailles} onChange={handleTailleChange} />
+        </div>
       </div>
 
       <div
